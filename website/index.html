@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title></title>
+</head>
+<body>
+    <div class="main-container">
+        
+        <div class="container">
+            <form id="controlForm">
+                <label for="heightInput">Wprowadź wysokość: </label>
+                <input type="text" id="heightInput" name="heightInput">
+                <button type="submit" onclick="return_value()">Zatwierdź</button>
+            </form>
+        </div>
+        
+    </div>
+    
+    <script>
+        function return_value() {
+            var heightInputValue = document.getElementById('heightInput').value;
+            console.log(heightInputValue);
+
+        }   
+    </script>
+        
+</body>
+</html>
