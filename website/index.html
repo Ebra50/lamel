@@ -7,23 +7,24 @@
 </head>
 <body>
     <div class="main-container">
-        
         <div class="container">
             <form id="controlForm">
                 <label for="heightInput">Wprowadź wysokość: </label>
                 <input type="text" id="heightInput" name="heightInput">
-                <button type="submit" onclick="return_value()">Zatwierdź</button>
+                <button type="button" onclick="return_value()">Zatwierdź</button>
             </form>
         </div>
-        
     </div>
     
     <script>
         function return_value() {
             var heightInputValue = document.getElementById('heightInput').value;
             console.log(heightInputValue);
-
-        }   
+        }
+        document.getElementById('controlForm').addEventListener('submit', function(event) {
+            event.preventDefault();
+            return_value();
+        });
     </script>
         
 </body>
