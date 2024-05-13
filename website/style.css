@@ -1,5 +1,6 @@
 body {
-    font-family: Arial, sans-serif;
+    font-family: "Barlow", Sans-serif;
+    font-weight: 500;
     margin: 0;
     padding: 0;
     display: flex;
@@ -11,17 +12,26 @@ body {
 .container {
     text-align: center;
 }
-
-#accept_button {
-
-    background-color: aqua;
-
-}
-
 #logo {
-    max-width: 100px;
+    max-width: 200px;
     margin-bottom: 20px;
 }
 #controlForm {
     margin-bottom: 20px;
+}
+
+#controlForm input,
+#controlForm button {
+    font-family: "Barlow", Sans-serif;
+    font-weight: 500;
+    display: block; 
+    margin: 0 auto; 
+    margin-top: 1%;
+    width: 150px;
+    height: 30px;
+
+}
+
+#controlForm button:hover {
+    background-color: #6b30c4;
 }
