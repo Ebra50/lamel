@@ -12,26 +12,59 @@ body {
 .container {
     text-align: center;
 }
-#logo {
-    max-width: 200px;
+img {
+    max-width: 300px;
     margin-bottom: 20px;
 }
 #controlForm {
     margin-bottom: 20px;
 }
 
-#controlForm input,
+#controlForm input[type="text"]::placeholder {
+    color: #666;
+    opacity: 1;
+}
 #controlForm button {
     font-family: "Barlow", Sans-serif;
     font-weight: 500;
     display: block; 
     margin: 0 auto; 
-    margin-top: 1%;
-    width: 150px;
-    height: 30px;
+    margin-top: 5%;
+    padding: 10px;
+    height: 40px;
+    border: none; 
+    border-radius: 5px;
+    background-color: #6b30c4; 
+    color: white; 
+    cursor: pointer; 
+    transition: background-color 0.3s ease; 
+}
 
+#controlForm input[type="text"]::placeholder {
+    color: #999; 
 }
 
 #controlForm button:hover {
-    background-color: #6b30c4;
+    background-color: #4a1a7f; 
+}
+
+.button_return_to_0_level {
+    font-family: "Barlow", Sans-serif;
+    font-weight: 500;
+    display: block; 
+    margin: 0 auto; 
+    margin-top: 5%;
+    padding: 10px; 
+    width: 200px;
+    height: 40px;
+    border: none;
+    border-radius: 5px; 
+    background-color: #6b30c4; 
+    color: white; 
+    cursor: pointer;
+    transition: background-color 0.3s ease; 
+}
+
+.button_return_to_0_level:hover {
+    background-color: #4a1a7f; 
 }
