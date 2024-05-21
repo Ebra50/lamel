@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Control Panel</title>
+    <style>
+        body {
+            font-family: "Barlow", Sans-serif;
+            font-weight: 500;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background-color: #f0f0f0;
+        }
+        .container {
+            text-align: center;
+        }
+        img {
+            max-width: 300px;
+            margin-bottom: 20px;
+        }
+        #controlForm {
+            margin-bottom: 20px;
+        }
+        #controlForm input[type="text"] {
+            font-family: "Barlow", Sans-serif;
+            font-weight: 500;
+            width: 80%;
+            max-width: 300px;
+            padding: 10px;
+            margin-top: 5%;
+            border: 2px solid #6b30c4;
+            border-radius: 5px;
+            background-color: white;
+            color: #666;
+            box-sizing: border-box;
+            transition: border-color 0.3s ease, box-shadow 0.3s ease;
+        }
+        #controlForm input[type="text"]::placeholder {
+            color: #999;
+        }
+        #controlForm input[type="text"]:focus {
+            border-color: #4a1a7f;
+            box-shadow: 0 0 5px rgba(106, 48, 196, 0.5);
+            outline: none;
+        }
+        #controlForm button {
+            font-family: "Barlow", Sans-serif;
+            font-weight: 500;
+            display: block; 
+            margin: 0 auto; 
+            margin-top: 5%;
+            padding: 10px;
+            height: 40px;
+            border: none; 
+            border-radius: 5px;
+            background-color: #6b30c4; 
+            color: white; 
+            cursor: pointer; 
+            transition: background-color 0.3s ease; 
+        }
+        #controlForm button:hover {
+            background-color: #4a1a7f;
+        }
+        .button_return_to_0_level, .button_to_catch_ball {
+            font-family: "Barlow", Sans-serif;
+            font-weight: 500;
+            display: block; 
+            margin: 0 auto; 
+            margin-top: 5%;
+            padding: 10px; 
+            width: 200px;
+            height: 40px;
+            border: none;
+            border-radius: 5px; 
+            background-color: #6b30c4; 
+            color: white; 
+            cursor: pointer;
+            transition: background-color 0.3s ease; 
+        }
+        .button_return_to_0_level:hover{ 
+            background-color: #4a1a7f; 
+        }
+
+        .button_to_catch_ball:hover {
+            background-color: #4a1a7f; 
+        }
+
+        .additional-buttons {
+            display: flex;
+            justify-content: center;
+            margin-top: 5%;
+        }
+        .additional-buttons button {
+            font-family: "Barlow", Sans-serif;
+            font-weight: 500;
+            padding: 10px;
+            width: 80px;
+            height: 40px;
+            margin: 0 5px;
+            border: none;
+            border-radius: 5px; 
+            background-color: #6b30c4; 
+            color: white; 
+            cursor: pointer;
+            transition: background-color 0.3s ease; 
+        }
+        .additional-buttons button:hover {
+            background-color: #4a1a7f; 
+        }
+    </style>
+</head>
+<body>
+    <div class="main-container">
+        <div class="container">
+            <img src="https://i0.wp.com/cutanduse.com/wp-content/uploads/2023/07/27.04.2023_logo_myscreen-CUTUSE_is-02.png?resize=1536%2C594&ssl=1" alt="None">
+            <form id="controlForm">
+                <input type="text" id="heightInput" name="heightInput" placeholder="Wprowadź wartość">
+                <button id="accept_button" type="button" onclick="return_value()">Zatwierdź</button>
+            </form>
+            <div class="button_return_to_0">
+                <button class="button_return_to_0_level" onclick="returnToZero()">Powrót do pozycji 0</button>
+            </div>
+            <div class="catch_ball">
+                <button class="button_to_catch_ball" onclick="catchBall()">Złap piłkę!</button>
+            </div>
+            <div class="additional-buttons">
+                <button class="button_1_4h" onclick="setPosition(2500)">1/4H</button>
+                <button class="button_1_2h" onclick="setPosition(5000)">1/2H</button>
+                <button class="button_h" onclick="setPosition(10000)">H</button>
+            </div>
+        </div>
+    </div>
+    <script>
+        function return_value() {
+            var heightInputValue = document.getElementById('heightInput').value;
+            console.log(heightInputValue);
+            var xhr = new XMLHttpRequest();
+            xhr.open("GET", "/heightInput?value="+heightInputValue, true);
+            xhr.send();
+        }
+
+        function returnToZero() {
+            console.log("Returning to zero");
+            var xhr = new XMLHttpRequest();
+            xhr.open("GET", "/returnToZero", true);
+            xhr.send();
+        }
+
+        function catchBall() {
+            console.log("Catching ball");
+            var xhr = new XMLHttpRequest();
+            xhr.open("GET", "/catchBall", true);
+            xhr.send();
+        }
+
+        function setPosition(position) {
+            console.log("Setting position to " + position);
+            var xhr = new XMLHttpRequest();
+            xhr.open("GET", "/setPosition?value="+position, true);
+            xhr.send();
+        }
+
+        document.getElementById('controlForm').addEventListener('submit', function(event) {
+            event.preventDefault();
+            return_value();
+        });
+    </script>
+</body>
+</html>

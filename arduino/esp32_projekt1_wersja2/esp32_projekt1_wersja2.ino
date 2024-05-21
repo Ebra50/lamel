@@ -210,9 +210,11 @@ void down() {
     digitalWrite(motor_pin_2, LOW);
     // digitalWrite(relay, LOW);
     Serial.println("Osiągnięto maksymalną pozycję w dół");
-    rozjebie_cos = true;
     pos = 0; // Zresetuj pozycję enkodera
   }
+
+  rozjebie_cos = true;
+
 }
 
 
