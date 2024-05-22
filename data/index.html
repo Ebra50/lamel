@@ -15,6 +15,7 @@
             align-items: center;
             height: 100vh;
             background-color: #f0f0f0;
+            
         }
         .container {
             text-align: center;
@@ -112,6 +113,49 @@
         .additional-buttons button:hover {
             background-color: #4a1a7f; 
         }
+
+        .checkbox_to_loop_cycle {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin-top: 5%;
+        }
+
+        .checkbox_to_loop_cycle span {
+            margin-left: 10px;
+        }
+
+        .checkbox_loop {
+            -webkit-appearance: none;
+            -moz-appearance: none;
+            appearance: none;
+            width: 20px;
+            height: 20px;
+            background: #fff;
+            border: 2px solid #6b30c4;
+            border-radius: 4px;
+            cursor: pointer;
+            outline: none;
+            position: relative;
+            transition: background-color 0.3s ease;
+            margin-right: 10px;
+        }
+
+        .checkbox_loop:checked {
+            background-color: #6b30c4;
+            border-color: #6b30c4;
+        }
+
+        .checkbox_loop:checked::after {
+            content: "\2713";
+            font-size: 16px;
+            color: #fff;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+        }
+
     </style>
 </head>
 <body>
@@ -122,17 +166,22 @@
                 <input type="text" id="heightInput" name="heightInput" placeholder="Wprowadź wartość">
                 <button id="accept_button" type="button" onclick="return_value()">Zatwierdź</button>
             </form>
-            <div class="button_return_to_0">
+            <!-- <div class="button_return_to_0">
                 <button class="button_return_to_0_level" onclick="returnToZero()">Powrót do pozycji 0</button>
             </div>
             <div class="catch_ball">
                 <button class="button_to_catch_ball" onclick="catchBall()">Złap piłkę!</button>
-            </div>
+            </div> -->
             <div class="additional-buttons">
                 <button class="button_1_4h" onclick="setPosition(2500)">1/4H</button>
                 <button class="button_1_2h" onclick="setPosition(5000)">1/2H</button>
                 <button class="button_h" onclick="setPosition(10000)">H</button>
             </div>
+
+            <div class="checkbox_to_loop_cycle">
+                <input class="checkbox_loop" type="checkbox" onclick="CheckBoxLoop()">Pętla
+            </div>
+            
         </div>
     </div>
     <script>
@@ -143,32 +192,43 @@
             xhr.open("GET", "/heightInput?value="+heightInputValue, true);
             xhr.send();
         }
-
+    
         function returnToZero() {
             console.log("Returning to zero");
             var xhr = new XMLHttpRequest();
             xhr.open("GET", "/returnToZero", true);
             xhr.send();
         }
-
+    
         function catchBall() {
             console.log("Catching ball");
             var xhr = new XMLHttpRequest();
             xhr.open("GET", "/catchBall", true);
             xhr.send();
         }
-
+    
         function setPosition(position) {
-            console.log("Setting position to " + position);
+            console.log("Setting position to " + position + " cm");
             var xhr = new XMLHttpRequest();
             xhr.open("GET", "/setPosition?value="+position, true);
             xhr.send();
         }
-
+    
         document.getElementById('controlForm').addEventListener('submit', function(event) {
             event.preventDefault();
             return_value();
         });
-    </script>
+
+        function CheckBoxLoop() {
+            var checkbox = document.querySelector('.checkbox_loop');
+            var value = checkbox.checked;
+            console.log("Checkbox has been set to " + value);
+            var xhr = new XMLHttpRequest();
+            xhr.open("GET", "/CheckBoxLoop?value=" + value, true);
+            xhr.send();
+        }
+
+
+    </script>    
 </body>
 </html>
