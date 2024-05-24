@@ -1,6 +1,6 @@
-Urządzenie do testowania szybek/folii na telefon firmy MyScreen.
+# ** Urządzenie do testowania szybek/folii na telefon firmy MyScreen. **
 
-Jak używać?
+## **Jak skonfigurować urządzenie do pokazu?**
 
 Do poprawnego działania programu ESP (płytka odpowiedzialna za sterowanie silnikiem oraz innymi urządzeniami) wymaga sieci WiFi, z wykorzystaniem Hotspota możemy takową stworzyć. 
 
