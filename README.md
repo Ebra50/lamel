@@ -1,4 +1,4 @@
-# **Urządzenie do testowania szybek/folii na telefon firmy MyScreen.**
+# **Urządzenie do testowania szybek/folii na telefon firmy MyScreen📱.**
 
 ## **Jak skonfigurować urządzenie do pokazu?**
 
