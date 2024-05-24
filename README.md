@@ -1,4 +1,4 @@
-# ** Urządzenie do testowania szybek/folii na telefon firmy MyScreen. **
+** Urządzenie do testowania szybek/folii na telefon firmy MyScreen. **
 
 ## **Jak skonfigurować urządzenie do pokazu?**
 
@@ -13,6 +13,7 @@ const char* ssid = "WPROWADŹ TUTAJ NAZWĘ SWOJEJ SIECI DO KTÓREJ CHCESZ PODŁ�
 const char* password = "HASŁO DO SIECI";
 ```
 
+Aby zmiany zadziałały musimy skompilować program oraz go zuploadować do ESP. W tym celu wykorzystujemy Arduino IDE [Download link for windows](https://downloads.arduino.cc/arduino-1.8.19-windows.exe)
 
 Potencjalne problemy:
 
