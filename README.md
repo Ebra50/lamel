@@ -5,7 +5,7 @@ Do poprawnego działania programu ESP (płytka odpowiedzialna za sterowanie siln
 
 Aby zmiany zadziałały musimy skompilować program oraz go zuploadować do ESP. W tym celu wykorzystujemy Arduino IDE [Download link for windows](https://downloads.arduino.cc/arduino-1.8.19-windows.exe)
 
-![](src/lamel-gif.gif)
+![](src/gif-lamel-wiekszy.gif)
 
 ## **Jak skonfigurować urządzenie do pokazu?**
 
