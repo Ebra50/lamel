@@ -15,7 +15,7 @@ const char* password = "HASŁO DO SIECI";
 
 Aby zmiany zadziałały musimy skompilować program oraz go zuploadować do ESP. W tym celu wykorzystujemy Arduino IDE [Download link for windows](https://downloads.arduino.cc/arduino-1.8.19-windows.exe)
 
-Potencjalne problemy:
+# Potencjalne problemy:
 
 1. Podczas uploadowania pliku błąd 0x13 (Wrong boot mode detected) - Aby rozwiązać problem należy podczas uploadowania pliku wcisnąć przycisk na płytce "BOOT"
 
