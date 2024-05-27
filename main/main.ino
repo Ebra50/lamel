@@ -12,10 +12,13 @@
 #define ENCA 15
 #define ENCB 2
 #define relay 5
-#define FSR 4
+#define fsrPin 34
 
-const char* ssid = "Lamel R&D 2.4GHz";
-const char* password = "!lamel2024.";
+// const char* ssid = "Lamel R&D 2.4GHz";
+// const char* password = "!lamel2024.";
+
+const char* ssid = "123";
+const char* password = "cfel1234@";
 
 AsyncWebServer server(80);
 
@@ -32,10 +35,97 @@ volatile int targetPosition = 0;
 
 const float unitsPerCm = 165.0; // kazdy centymetr to 165 jednostek enkodera
 
-const int fsrPin = A0; 
-const int maxValue = 4095; // adc w esp32 ma 12 bitowy przetwornik
-const int maxForce = 20; 
-const float maxWeight = 2.0;
+void setup() {
+  Serial.begin(115200);
+
+  pinMode(ENCA, INPUT);
+  pinMode(ENCB, INPUT);
+  pinMode(relay, OUTPUT);
+  pinMode(fsrPin, INPUT);
+  pinMode(enable_pin, OUTPUT);
+  pinMode(motor_pin_1, OUTPUT);
+  pinMode(motor_pin_2, OUTPUT);
+  pinMode(sensor_position_0, INPUT);
+  pinMode(sensor_position_max, INPUT);
+
+  digitalWrite(relay, LOW);
+
+  attachInterrupt(digitalPinToInterrupt(ENCA), readEncoder, RISING);
+
+  if (!SPIFFS.begin(true)) {
+    Serial.println("Problem z SPIFFS");
+    return;
+  }
+
+  WiFi.begin(ssid, password);
+
+  while (WiFi.status() != WL_CONNECTED) {
+    delay(1000);
+    Serial.println("Connecting to WiFi..");
+  }
+
+  Serial.println(WiFi.localIP());
+
+  server.on("/", HTTP_GET, [](AsyncWebServerRequest *request){
+    request->send(SPIFFS, "/index.html", String(), false);
+  });
+
+  server.serveStatic("/images", SPIFFS, "/images");
+
+  server.on("/heightInput", HTTP_GET, [](AsyncWebServerRequest *request){
+    if (request->hasParam("value")) {
+      targetPosition = request->getParam("value")->value().toInt();
+      setPosition(targetPosition);
+      check = false;
+      Serial.print("New target position: ");
+      Serial.println(targetPosition);
+    }
+    request->send(200, "text/plain", "OK");
+  });
+
+  server.on("/setPosition", HTTP_GET, [](AsyncWebServerRequest *request){
+    if (request->hasParam("value")) {
+      targetPosition = request->getParam("value")->value().toInt();
+      check = false;
+      Serial.print("New target position: ");
+      Serial.println(targetPosition);
+    }
+    request->send(200, "text/plain", "OK");
+  });
+
+  server.on("/returnToZero", HTTP_GET, [](AsyncWebServerRequest *request){
+    targetPosition = 0;
+    check = false;
+    return_to_0_bool = true;
+    Serial.println("Returning to zero position");
+    request->send(200, "text/plain", "OK");
+  });
+
+  server.on("/catchBall", HTTP_GET, [](AsyncWebServerRequest *request){
+    Serial.println("Catching ball");
+    check = false;
+    go_for_ball = true;
+    request->send(200, "text/plain", "OK");
+  });
+
+  server.on("/CheckBoxLoop", HTTP_GET, [](AsyncWebServerRequest *request){
+    if (request->hasParam("value")) {
+      String value = request->getParam("value")->value();
+      checkbox_value = (value == "true");
+      Serial.print("Checkbox value: ");
+      Serial.println(checkbox_value ? "true" : "false");
+    }
+    request->send(200, "text/plain", "OK");
+  });
+
+  server.on("/getFSRValue", HTTP_GET, [](AsyncWebServerRequest *request){
+    float fsrValue = readFSR();
+    String response = String(fsrValue);
+    request->send(200, "text/plain", response);
+  });
+
+  server.begin();
+}
 
 int cmToEncoderUnits(float cm) { //zamiana tych "jednostek" enkodera na cm aby wygodniej sie wpisywalo w panelu
   return (int)(cm * unitsPerCm);
@@ -52,22 +142,20 @@ void setPosition(float cm) {
   targetPosition_bool = true;
 }
 
-void readFSR() {
-  int fsrReading = analogRead(fsrPin); 
-  float force = map(fsrReading, 0, maxValue, 0, maxForce); 
-  float weight = force / 9.81;
+float readFSR() {
+  int fsrReading = analogRead(fsrPin);
+  float weightInGrams = map(fsrReading, 0, 4095, 0, 2000);
 
-  static float maxWeightObserved = 0.0;
+  Serial.print("FSR Reading: ");
+  Serial.print(fsrReading);
+  Serial.print(" / Weight: ");
+  Serial.print(weightInGrams);
+  Serial.println(" g");
 
-  if (weight > maxWeightObserved) {
-    maxWeightObserved = weight;
-  }
-
-  Serial.print("Największa dotychczasowa wartość ciężaru: ");
-  Serial.print(maxWeightObserved);
-  Serial.println(" kg");
+  return weightInGrams;
 
   delay(1000);
+
 }
 
 void readEncoder(){
@@ -141,7 +229,11 @@ void one_and_a_quarter() {
     check = true;
     delay(2000);
     digitalWrite(relay, LOW);
-    delay(4000);
+    delay(3000);
+
+    float fsrValue = readFSR();
+    Serial.print("FSR value: ");
+    Serial.println(fsrValue);
     check = true;
     catchBall();
     start_new_cycle = false;
@@ -174,7 +266,7 @@ void one_and_a_half() {
     check = true;
     delay(2000);
     digitalWrite(relay, LOW);
-    delay(4000);
+    delay(3000);
     check = true;
     catchBall();
     start_new_cycle = false;
@@ -207,7 +299,7 @@ void h() {
     check = true;
     delay(2000);
     digitalWrite(relay, LOW);
-    delay(4000);
+    delay(3000);
     check = true;
     catchBall();
     start_new_cycle = false;
@@ -239,97 +331,13 @@ void go_to_targetPosition() {
     check = true;
     delay(2000);
     digitalWrite(relay, LOW);
-    delay(4000);
     check = true;
-    catchBall();
+    // float fsrValue = readFSR(); // Read FSR value here
+    // Serial.print("FSR value: ");
+    // Serial.println(fsrValue);
+    delay(3000);
     start_new_cycle = false;
   }
-}
-
-void setup() {
-  Serial.begin(115200);
-
-  pinMode(motor_pin_1, OUTPUT);
-  pinMode(motor_pin_2, OUTPUT);
-  pinMode(enable_pin, OUTPUT);
-  pinMode(relay, OUTPUT);
-  pinMode(sensor_position_max, INPUT);
-  pinMode(sensor_position_0, INPUT);
-  pinMode(ENCA, INPUT);
-  pinMode(ENCB, INPUT);
-  pinMode(FSR, INPUT);
-
-  digitalWrite(relay, LOW);
-
-  attachInterrupt(digitalPinToInterrupt(ENCA), readEncoder, RISING);
-
-  if (!SPIFFS.begin(true)) {
-    Serial.println("Problem z SPIFFS");
-    return;
-  }
-
-  WiFi.begin(ssid, password);
-
-  while (WiFi.status() != WL_CONNECTED) {
-    delay(1000);
-    Serial.println("Connecting to WiFi..");
-  }
-
-  Serial.println(WiFi.localIP());
-
-  server.on("/", HTTP_GET, [](AsyncWebServerRequest *request){
-    request->send(SPIFFS, "/index.html", String(), false);
-  });
-
-  server.serveStatic("/images", SPIFFS, "/images");
-
-  server.on("/heightInput", HTTP_GET, [](AsyncWebServerRequest *request){
-    if (request->hasParam("value")) {
-      targetPosition = request->getParam("value")->value().toInt();
-      setPosition(targetPosition);
-      check = false;
-      Serial.print("New target position: ");
-      Serial.println(targetPosition);
-    }
-    request->send(200, "text/plain", "OK");
-  });
-
-  server.on("/setPosition", HTTP_GET, [](AsyncWebServerRequest *request){
-    if (request->hasParam("value")) {
-      targetPosition = request->getParam("value")->value().toInt();
-      check = false;
-      Serial.print("New target position: ");
-      Serial.println(targetPosition);
-    }
-    request->send(200, "text/plain", "OK");
-  });
-
-  server.on("/returnToZero", HTTP_GET, [](AsyncWebServerRequest *request){
-    targetPosition = 0;
-    check = false;
-    return_to_0_bool = true;
-    Serial.println("Returning to zero position");
-    request->send(200, "text/plain", "OK");
-  });
-
-  server.on("/catchBall", HTTP_GET, [](AsyncWebServerRequest *request){
-    Serial.println("Catching ball");
-    check = false;
-    go_for_ball = true;
-    request->send(200, "text/plain", "OK");
-  });
-
-  server.on("/CheckBoxLoop", HTTP_GET, [](AsyncWebServerRequest *request){
-    if (request->hasParam("value")) {
-      String value = request->getParam("value")->value();
-      checkbox_value = (value == "true");
-      Serial.print("Checkbox value: ");
-      Serial.println(checkbox_value ? "true" : "false");
-    }
-    request->send(200, "text/plain", "OK");
-  });
-
-  server.begin();
 }
 
 void show_actual_position() {
@@ -346,11 +354,11 @@ void show_sensor_state() {
 }
 
 void loop() {
+
   if (targetPosition != 0 && targetPosition >= -15000 && targetPosition <= 16500 && check == false) {
     while (checkbox_value == true) {
       if (targetPosition == 2500) {
         one_and_a_quarter();
-        readFSR();
         delay(5000);
         catchBall();
         targetPosition_bool = false;
@@ -358,7 +366,6 @@ void loop() {
 
       if (targetPosition == 5000) {
         one_and_a_half();
-        readFSR();
         delay(5000);
         catchBall();
         targetPosition_bool = false;
@@ -367,14 +374,12 @@ void loop() {
       if (targetPosition == 10000) {
         h();
         delay(5000);
-        readFSR();
         catchBall();
         targetPosition_bool = false;
       }
 
       if (targetPosition_bool == true) {
         go_to_targetPosition();
-        readFSR();
         delay(5000);
         catchBall();
       }
@@ -382,28 +387,24 @@ void loop() {
 
     if (targetPosition == 2500) {
       one_and_a_quarter();
-      readFSR();
       delay(5000);
       catchBall();
       targetPosition_bool = false;
     }
     if (targetPosition == 5000) {
       one_and_a_half();
-      readFSR();
       delay(5000);
       catchBall();
       targetPosition_bool = false;
     }
     if (targetPosition == 10000) {
       h();
-      readFSR();
       delay(5000);
       catchBall();
       targetPosition_bool = false;
     }
     if (targetPosition_bool == true) {
       go_to_targetPosition();
-      readFSR();
       delay(5000);
       catchBall();
     }

@@ -163,7 +163,7 @@
         <div class="container">
             <img src="https://i0.wp.com/cutanduse.com/wp-content/uploads/2023/07/27.04.2023_logo_myscreen-CUTUSE_is-02.png?resize=1536%2C594&ssl=1" alt="None">
             <form id="controlForm">
-                <input type="text" id="heightInput" name="heightInput" placeholder="Wprowadź wartość">
+                <input type="text" id="heightInput" name="heightInput" placeholder="Wprowadź wartość od 0 do 100">
                 <button id="accept_button" type="button" onclick="return_value()">Zatwierdź</button>
             </form>
             <!-- <div class="button_return_to_0">
@@ -182,6 +182,8 @@
                 <input class="checkbox_loop" type="checkbox" onclick="CheckBoxLoop()">Pętla
             </div>
             
+            <div class="fsr-value" id="fsrValue">FSR Value: 0</div>
+
         </div>
     </div>
     <script>
@@ -228,6 +230,15 @@
             xhr.send();
         }
 
+        function updateFSRValue() {
+            fetch('/getFSRValue')
+                .then(response => response.text())
+                .then(data => {
+                document.getElementById('fsrValue').innerText = 'FSR Value: ' + data;
+            });
+        }
+
+    setInterval(updateFSRValue, 1000);
 
     </script>    
 </body>
