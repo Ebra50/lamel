@@ -18,6 +18,13 @@ const char* password = "HASŁO DO SIECI";
 
 Po wprowadzaniu SSID i hasła sieci, klikamy kombinację klawiszy CNTRL + U aby zuploadować plik na płytkę. Jeśli zobaczymy następujacę logi w konsoli. 
 
+![succesful_verification](src/succesful_verifiaction_for_program.png)
+
+Oraz 
+
+![succesful_upload](src/succesful_upload_of_program.png)
+
+Oznacza to że program został wgrany poprawnie.
 
 ### Potencjalne problemy:
 
