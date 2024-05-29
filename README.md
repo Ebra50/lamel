@@ -24,7 +24,13 @@ Oraz
 
 ![succesful_upload](src/succesful_upload_of_program.png)
 
-Oznacza to że program został wgrany poprawnie.
+Oznacza to że program został wgrany poprawnie. Jeśli nie udało się zobacz sekcje **Potencjalne problemy**.
+
+Aby odnaleźć adres IP urządzenia, po wgraniu programu należy w górnym pasku przejść do **Tools** -> **Serial Monitor**. 
+
+Proces ukazny na poniższym gifie.
+
+![uploading_and_looking_for_an_ip_address](src/uploading_and_looking_for_an_ip_address.gif)
 
 ### Potencjalne problemy:
 
