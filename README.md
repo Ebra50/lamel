@@ -9,14 +9,15 @@ Aby zmiany zadziałały musimy skompilować program oraz go zuploadować do ESP.
 
 ## **Jak skonfigurować urządzenie do pokazu?**
 
-Następnie należy pobrać/zklonować całe repozytorium tego projektu. Otwieramy plik z rozszerzeniem .ino który zawiera kod źródłowy. 
-
-Następnie odszukujemy linijki odpowiedzialne za credentialsy (SSID, hasło do sieci Hotspot). Wprowadzamy tam nazwę sieci (SSID) oraz hasło do sieci. 
+Po otwarciu pliku (proces ukazany na gifie wyżej) odszukujemy linijki odpowiedzialne za credentialsy (SSID, hasło do sieci Hotspot). Wprowadzamy tam nazwę sieci (SSID) oraz hasło do sieci. 
 
 ```
 const char* ssid = "WPROWADŹ TUTAJ NAZWĘ SWOJEJ SIECI DO KTÓREJ CHCESZ PODŁĄCZYĆ ESP";
 const char* password = "HASŁO DO SIECI";
 ```
+
+Po wprowadzaniu SSID i hasła sieci, klikamy kombinację klawiszy CNTRL + U aby zuploadować plik na płytkę. Jeśli zobaczymy następujacę logi w konsoli. 
+
 
 ### Potencjalne problemy:
 
